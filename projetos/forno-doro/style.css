@@ -1,0 +1,893 @@
+/* =========================================================
+   VARIÁVEIS — Identidade Forno D'Oro
+========================================================= */
+:root {
+    --preto: #0b0b0c;
+    --preto-card: #171514;
+    --marfim: #f5f1e8;
+    --marfim-suave: rgba(245, 241, 232, 0.65);
+    --vinho: #6b1220;
+    --vinho-claro: #8a1c2c;
+    --dourado: #c6a15b;
+    --dourado-claro: #e4c77e;
+
+    --fonte-display: 'Fraunces', serif;
+    --fonte-corpo: 'Manrope', sans-serif;
+
+    --transition: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --header-height: 88px;
+}
+
+/* =========================================================
+   RESET / BASE
+========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height);
+}
+
+body {
+    background: var(--preto);
+    color: var(--marfim);
+    font-family: var(--fonte-corpo);
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 24px;
+}
+
+h1, h2, h3 {
+    font-family: var(--fonte-display);
+    line-height: 1.15;
+    font-weight: 600;
+}
+
+h1 em, h2 em {
+    font-style: italic;
+    color: var(--dourado-claro);
+    font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 20px;
+    background: var(--vinho);
+    color: var(--marfim);
+    padding: 10px 18px;
+    border-radius: 6px;
+    z-index: 2000;
+    transition: top var(--transition);
+}
+
+.skip-link:focus { top: 20px; }
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--dourado-claro);
+    outline-offset: 3px;
+}
+
+/* =========================================================
+   TIPOGRAFIA UTILITÁRIA
+========================================================= */
+.eyebrow {
+    font-family: var(--fonte-corpo);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--dourado);
+    margin-bottom: 14px;
+}
+
+.eyebrow.center { text-align: center; }
+
+.section h2 {
+    font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+    margin-bottom: 20px;
+}
+
+.section h2.center,
+h2.center { text-align: center; margin-left: auto; margin-right: auto; }
+
+/* =========================================================
+   HEADER
+========================================================= */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: transparent;
+    transition: background var(--transition), border-color var(--transition);
+    border-bottom: 1px solid transparent;
+}
+
+header.scrolled {
+    background: rgba(11, 11, 12, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom-color: rgba(198, 161, 91, 0.25);
+}
+
+.header-inner {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-family: var(--fonte-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--marfim);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+}
+
+.logo span { color: var(--dourado); font-style: italic; }
+
+.nav ul {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+    list-style: none;
+}
+
+.nav a {
+    color: var(--marfim);
+    text-decoration: none;
+    font-size: 0.95rem;
+    position: relative;
+    transition: color var(--transition);
+}
+
+.nav a:not(.btn-outline)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 0;
+    height: 1px;
+    background: var(--dourado);
+    transition: width var(--transition);
+}
+
+.nav a:not(.btn-outline):hover::after { width: 100%; }
+.nav a:hover { color: var(--dourado-claro); }
+
+.btn-outline {
+    border: 1px solid var(--dourado);
+    color: var(--dourado-claro) !important;
+    padding: 9px 22px;
+    border-radius: 2px;
+    transition: var(--transition);
+}
+
+.btn-outline:hover {
+    background: var(--dourado);
+    color: var(--preto) !important;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.menu-toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--marfim);
+    transition: var(--transition);
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* =========================================================
+   HERO
+   A "brasa" é um gradiente radial pulsante — a assinatura ambiente
+   que remete ao forno a lenha sem recorrer a imagens de fogo.
+========================================================= */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--header-height) 24px 0;
+    overflow: hidden;
+    /* Imagem real: Klara Kulikova, via Unsplash (licença livre, uso comercial) */
+    background-image: linear-gradient(rgba(11, 11, 12, 0.72), rgba(11, 11, 12, 0.85)), url("https://images.unsplash.com/photo-1606152196365-d1ce5ea838b5?auto=format&fit=crop&w=1800&q=80");
+    background-size: cover;
+    background-position: center;
+}
+
+.brasa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 900px;
+    height: 900px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(198, 161, 91, 0.16) 0%, rgba(107, 18, 32, 0.12) 40%, transparent 70%);
+    animation: pulsar-brasa 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes pulsar-brasa {
+    0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 720px; }
+
+.hero-content h1 {
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    margin-bottom: 24px;
+}
+
+.hero-texto {
+    color: var(--marfim-suave);
+    font-size: 1.1rem;
+    max-width: 560px;
+    margin: 0 auto 36px;
+}
+
+.hero-ctas {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: var(--vinho);
+    color: var(--marfim);
+    padding: 15px 34px;
+    border-radius: 2px;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--vinho);
+    transition: var(--transition);
+    cursor: pointer;
+    font-family: var(--fonte-corpo);
+    font-size: 0.95rem;
+}
+
+.btn-primary:hover {
+    background: var(--vinho-claro);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(107, 18, 32, 0.4);
+}
+
+.btn-outline-invert {
+    display: inline-block;
+    padding: 15px 34px;
+    border: 1px solid var(--dourado);
+    color: var(--dourado-claro);
+    border-radius: 2px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.btn-outline-invert:hover {
+    background: var(--dourado);
+    color: var(--preto);
+}
+
+.scroll-cue {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 36px;
+    border: 1px solid var(--dourado);
+    border-radius: 12px;
+    z-index: 2;
+}
+
+.scroll-cue span {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    width: 4px;
+    height: 8px;
+    background: var(--dourado-claro);
+    border-radius: 2px;
+    transform: translateX(-50%);
+    animation: scroll-cue-move 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-cue-move {
+    0% { opacity: 1; top: 6px; }
+    100% { opacity: 0; top: 18px; }
+}
+
+/* =========================================================
+   BORDA QUEIMADA — elemento de assinatura
+   Divisor irregular entre seções, remetendo à crosta borbulhada
+   e carbonizada de uma pizza saída do forno a lenha.
+========================================================= */
+.borda-queimada {
+    width: 100%;
+    height: 28px;
+    background-color: var(--preto);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q30 38 60 12 T120 20 T180 6 T240 26 T300 10 T360 30 T420 8 T480 22 T540 4 T600 24 T660 12 T720 32 T780 6 T840 20 T900 10 T960 28 T1020 8 T1080 22 T1140 12 T1200 20 V40 H0 Z' fill='black'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q30 38 60 12 T120 20 T180 6 T240 26 T300 10 T360 30 T420 8 T480 22 T540 4 T600 24 T660 12 T720 32 T780 6 T840 20 T900 10 T960 28 T1020 8 T1080 22 T1140 12 T1200 20 V40 H0 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    background: var(--dourado);
+    opacity: 0.5;
+}
+
+.borda-queimada.invertida {
+    transform: scaleY(-1);
+}
+
+/* =========================================================
+   SEÇÕES GERAIS
+========================================================= */
+.section {
+    padding: 110px 0;
+}
+
+.darker {
+    background: var(--preto-card);
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    margin-top: 50px;
+}
+
+/* =========================================================
+   PLACEHOLDER DE IMAGEM
+   Bloco visual elegante indicando claramente onde inserir
+   fotografia real — nunca imagens de terceiros/protegidas.
+========================================================= */
+.img-placeholder {
+    background: linear-gradient(135deg, rgba(198, 161, 91, 0.08), rgba(107, 18, 32, 0.12));
+    border: 1px dashed rgba(198, 161, 91, 0.4);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    min-height: 220px;
+    color: var(--dourado-claro);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+}
+
+/* =========================================================
+   FOTOS REAIS
+   Classe aplicada a toda imagem fotográfica real do site
+   (hero usa background-image; as demais usam esta classe).
+========================================================= */
+.foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 4px;
+}
+
+.ingrediente-foto {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 16px;
+    border: 2px solid var(--dourado);
+}
+
+/* =========================================================
+   SOBRE
+========================================================= */
+.sobre-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.sobre-img { min-height: 360px; border-radius: 4px; overflow: hidden; }
+
+.sobre-texto p:not(.eyebrow) { color: var(--marfim-suave); margin-top: 18px; }
+
+/* =========================================================
+   NOSSA HISTÓRIA (linha do tempo)
+========================================================= */
+.historia-banner {
+    width: 100%;
+    height: 320px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 40px 0 10px;
+}
+
+.timeline {
+    max-width: 720px;
+    margin: 60px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 26px;
+    align-items: flex-start;
+    border-left: 1px solid rgba(198, 161, 91, 0.3);
+    padding-left: 26px;
+    position: relative;
+}
+
+.timeline-ano {
+    font-family: var(--fonte-display);
+    font-size: 1.6rem;
+    color: var(--dourado);
+    flex-shrink: 0;
+}
+
+.timeline-item h3 { margin-bottom: 6px; font-size: 1.15rem; }
+.timeline-item p { color: var(--marfim-suave); }
+
+/* =========================================================
+   CARDÁPIO
+========================================================= */
+.cardapio-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 60px;
+    align-items: start;
+    margin-top: 50px;
+}
+
+.cardapio-img {
+    height: 100%;
+    min-height: 420px;
+    border-radius: 4px;
+    overflow: hidden;
+    position: sticky;
+    top: 120px;
+}
+
+.cardapio-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 0 0 40px;
+}
+
+.tab-btn {
+    background: none;
+    border: 1px solid rgba(198, 161, 91, 0.35);
+    color: var(--marfim-suave);
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-family: var(--fonte-corpo);
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.tab-btn:hover { border-color: var(--dourado); color: var(--marfim); }
+
+.tab-btn.ativo {
+    background: var(--dourado);
+    color: var(--preto);
+    border-color: var(--dourado);
+    font-weight: 700;
+}
+
+.cardapio-lista {
+    list-style: none;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.cardapio-lista li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(245, 241, 232, 0.08);
+}
+
+.item-nome {
+    font-family: var(--fonte-display);
+    font-size: 1.1rem;
+}
+
+.item-nome::after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+    margin: 0 8px;
+    border-bottom: 1px dotted rgba(245, 241, 232, 0.25);
+    transform: translateY(-4px);
+}
+
+.item-preco {
+    font-weight: 700;
+    color: var(--dourado-claro);
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   PIZZAS EM DESTAQUE
+========================================================= */
+.pizza-card {
+    background: var(--preto);
+    border: 1px solid rgba(198, 161, 91, 0.15);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.pizza-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--dourado);
+    box-shadow: 0 24px 40px rgba(0, 0, 0, 0.45);
+}
+
+.pizza-tag {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--vinho);
+    color: var(--marfim);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 5px 12px;
+    border-radius: 20px;
+    z-index: 2;
+}
+
+.pizza-foto {
+    margin-bottom: 20px;
+    min-height: 180px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.pizza-card h3 { margin-bottom: 8px; font-size: 1.2rem; }
+.pizza-card p { color: var(--marfim-suave); font-size: 0.92rem; margin-bottom: 16px; }
+.pizza-preco { font-weight: 700; color: var(--dourado-claro); font-size: 1.05rem; }
+
+/* =========================================================
+   INGREDIENTES
+========================================================= */
+.ingrediente { text-align: center; padding: 20px; }
+.ingrediente-icone { font-size: 2.2rem; margin-bottom: 14px; }
+.ingrediente h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.ingrediente p { color: var(--marfim-suave); font-size: 0.92rem; }
+
+/* =========================================================
+   GALERIA
+========================================================= */
+.galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    gap: 16px;
+    margin-top: 50px;
+}
+
+.galeria-item { min-height: unset; overflow: hidden; border-radius: 4px; }
+.item-grande { grid-row: span 2; grid-column: span 2; }
+
+/* =========================================================
+   DEPOIMENTOS
+========================================================= */
+.depoimento-card {
+    background: var(--preto-card);
+    border-left: 2px solid var(--dourado);
+    padding: 28px;
+    border-radius: 2px;
+}
+
+.depoimento-card p {
+    font-family: var(--fonte-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--marfim);
+    margin-bottom: 16px;
+}
+
+.depoimento-card footer { color: var(--dourado-claro); font-size: 0.9rem; }
+
+/* =========================================================
+   FAQ (accordion)
+========================================================= */
+.faq-lista {
+    max-width: 720px;
+    margin: 50px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.faq-item {
+    background: var(--preto);
+    border: 1px solid rgba(198, 161, 91, 0.15);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.faq-pergunta {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: none;
+    border: none;
+    color: var(--marfim);
+    text-align: left;
+    font-family: var(--fonte-corpo);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 20px 22px;
+    cursor: pointer;
+}
+
+.faq-icone {
+    flex-shrink: 0;
+    font-size: 1.3rem;
+    color: var(--dourado);
+    transition: transform var(--transition);
+}
+
+.faq-item[data-aberto="true"] .faq-icone { transform: rotate(45deg); }
+
+.faq-resposta {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-slow);
+}
+
+.faq-resposta p { color: var(--marfim-suave); padding: 0 22px 20px; }
+
+/* =========================================================
+   LOCALIZAÇÃO
+========================================================= */
+.localizacao-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.localizacao-grid address {
+    font-style: normal;
+    color: var(--marfim-suave);
+    margin: 18px 0 28px;
+    display: block;
+}
+
+.horarios { list-style: none; }
+
+.horarios li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(245, 241, 232, 0.08);
+    color: var(--marfim-suave);
+}
+
+.mapa-placeholder { min-height: 320px; }
+
+/* =========================================================
+   CONTATO / RESERVA
+========================================================= */
+.form-contato {
+    max-width: 560px;
+    margin: 50px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-linha { display: flex; flex-direction: column; gap: 8px; }
+
+.form-linha label {
+    font-size: 0.85rem;
+    color: var(--dourado-claro);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.form-linha input,
+.form-linha textarea {
+    background: var(--preto);
+    border: 1px solid rgba(198, 161, 91, 0.3);
+    color: var(--marfim);
+    padding: 14px 16px;
+    border-radius: 2px;
+    font-family: var(--fonte-corpo);
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.form-linha input:focus,
+.form-linha textarea:focus {
+    outline: none;
+    border-color: var(--dourado);
+}
+
+.form-contato .btn-primary {
+    align-self: center;
+    margin-top: 8px;
+}
+
+.whatsapp-link {
+    display: block;
+    width: fit-content;
+    margin: 24px auto 0;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+footer {
+    background: var(--preto-card);
+    padding: 60px 0 24px;
+    border-top: 1px solid rgba(198, 161, 91, 0.15);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 30px;
+    padding-bottom: 40px;
+}
+
+.footer-logo { font-size: 1.3rem; }
+.footer-tagline { color: var(--marfim-suave); margin-top: 8px; font-size: 0.9rem; }
+
+.footer-grid nav,
+.footer-social {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-grid nav a,
+.footer-social a {
+    color: var(--marfim-suave);
+    text-decoration: none;
+    font-size: 0.92rem;
+    transition: color var(--transition);
+}
+
+.footer-grid nav a:hover,
+.footer-social a:hover { color: var(--dourado-claro); }
+
+.footer-credito {
+    text-align: center;
+    color: rgba(245, 241, 232, 0.4);
+    font-size: 0.82rem;
+    padding-top: 20px;
+    border-top: 1px solid rgba(245, 241, 232, 0.06);
+}
+
+.footer-credito strong { color: var(--dourado); }
+
+/* =========================================================
+   ANIMAÇÕES DE ENTRADA (fade-in)
+========================================================= */
+.fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-in.in-view { opacity: 1; transform: translateY(0); }
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+/* Notebooks e tablets grandes */
+@media (max-width: 992px) {
+    .sobre-grid,
+    .localizacao-grid { grid-template-columns: 1fr; gap: 40px; }
+
+    .cardapio-grid { grid-template-columns: 1fr; }
+    .cardapio-img { position: static; min-height: 260px; }
+
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+    .footer-grid nav, .footer-social { align-items: center; }
+
+    .galeria-grid { grid-template-columns: repeat(2, 1fr); }
+    .item-grande { grid-column: span 2; grid-row: span 1; }
+}
+
+/* Tablets e celulares */
+@media (max-width: 768px) {
+    .nav {
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        background: rgba(11, 11, 12, 0.98);
+        display: none;
+        flex-direction: column;
+        padding: 24px;
+        border-bottom: 1px solid rgba(198, 161, 91, 0.2);
+    }
+
+    .nav.active { display: flex; }
+    .nav ul { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .menu-toggle { display: flex; }
+
+    .section { padding: 70px 0; }
+
+    .galeria-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 160px; }
+
+    .cardapio-tabs { gap: 8px; }
+    .tab-btn { padding: 8px 16px; font-size: 0.8rem; }
+}
+
+/* Celulares pequenos */
+@media (max-width: 420px) {
+    .hero-ctas { flex-direction: column; width: 100%; }
+    .btn-primary, .btn-outline-invert { width: 100%; text-align: center; }
+
+    .galeria-grid { grid-template-columns: 1fr; }
+    .item-grande { grid-column: span 1; }
+}
+
+/* Monitores ultrawide */
+@media (min-width: 1800px) {
+    .container { max-width: 1360px; }
+}
